@@ -13,7 +13,7 @@
     android:layout_gravity="center_vertical"
     >
 
-    <net.kdt.pojavlaunch.colorselector.SVRectangleView
+    <zx.offical.quattro.colorselector.SVRectangleView
         android:id="@+id/color_selector_rectangle_view"
         android:layout_width="0dp"
         android:layout_height="@dimen/_150sdp"
@@ -24,7 +24,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <net.kdt.pojavlaunch.colorselector.ColorSideBySideView
+    <zx.offical.quattro.colorselector.ColorSideBySideView
         android:id="@+id/color_selector_color_view"
         android:layout_width="0dp"
         android:layout_height="@dimen/_94sdp"
@@ -49,7 +49,7 @@
 
 
 
-    <net.kdt.pojavlaunch.colorselector.AlphaView
+    <zx.offical.quattro.colorselector.AlphaView
         android:id="@+id/color_selector_alpha_view"
         android:layout_width="25dp"
         android:layout_height="0dp"
@@ -58,7 +58,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <net.kdt.pojavlaunch.colorselector.HueView
+    <zx.offical.quattro.colorselector.HueView
         android:id="@+id/color_selector_hue_view"
         android:layout_width="25dp"
         android:layout_height="0dp"

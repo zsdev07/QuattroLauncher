@@ -50,7 +50,7 @@ configurations {
 }
 
 android {
-    namespace 'git.artdeell.mojo'
+    namespace 'zx.offical.quattro'
 
     compileSdk = 36
 
@@ -74,7 +74,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "git.artdeell.mojo"
+        applicationId "zx.offical.quattro"
         def pluginPackageAngle = "git.mojo.angle"
         def pluginPackageFfmpeg = "git.mojo.ffmpeg"
         minSdkVersion 21
@@ -111,8 +111,8 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.customDebug
-            resValue 'string', 'application_package', 'git.artdeell.mojo.debug'
-            resValue 'string', 'storageProviderAuthorities', 'git.artdeell.mojo.scoped.gamefolder.debug'
+            resValue 'string', 'application_package', 'zx.offical.quattro.debug'
+            resValue 'string', 'storageProviderAuthorities', 'zx.offical.quattro.scoped.gamefolder.debug'
         }
         proguard {
             initWith debug
@@ -131,8 +131,8 @@ android {
             // defaultConfig already set
             // multiDexEnabled = true
             // debuggable = true
-            resValue 'string', 'storageProviderAuthorities', 'git.artdeell.mojo.scoped.gamefolder'
-            resValue 'string', 'application_package', 'git.artdeell.mojo'
+            resValue 'string', 'storageProviderAuthorities', 'zx.offical.quattro.scoped.gamefolder'
+            resValue 'string', 'application_package', 'zx.offical.quattro'
         }
         gplay {
             initWith release

@@ -14,12 +14,12 @@ import androidx.annotation.Keep;
 import androidx.annotation.Nullable;
 import androidx.core.util.Consumer;
 
-import net.kdt.pojavlaunch.GrabListener;
-import net.kdt.pojavlaunch.LwjglGlfwKeycode;
-import net.kdt.pojavlaunch.MainActivity;
-import net.kdt.pojavlaunch.Tools;
-import net.kdt.pojavlaunch.customcontrols.gamepad.direct.DirectGamepadEnableHandler;
-import net.kdt.pojavlaunch.customcontrols.mouse.CursorContainer;
+import zx.offical.quattro.GrabListener;
+import zx.offical.quattro.LwjglGlfwKeycode;
+import zx.offical.quattro.MainActivity;
+import zx.offical.quattro.Tools;
+import zx.offical.quattro.customcontrols.gamepad.direct.DirectGamepadEnableHandler;
+import zx.offical.quattro.customcontrols.mouse.CursorContainer;
 
 import java.lang.ref.WeakReference;
 import java.nio.ByteBuffer;
