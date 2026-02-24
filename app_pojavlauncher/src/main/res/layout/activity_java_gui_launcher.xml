@@ -11,7 +11,7 @@
 		android:layout_height="match_parent"
 		android:background="#000000">
 
-		<net.kdt.pojavlaunch.customcontrols.keyboard.TouchCharInput
+		<zx.offical.quattro.customcontrols.keyboard.TouchCharInput
 			android:id="@+id/awt_touch_char"
 			android:layout_width="1dp"
 			android:layout_height="1dp"
@@ -22,7 +22,7 @@
 			tools:ignore="TouchTargetSizeCheck"
 			/>
 
-		<net.kdt.pojavlaunch.AWTCanvasView
+		<zx.offical.quattro.AWTCanvasView
 			android:id="@+id/installmod_surfaceview"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"

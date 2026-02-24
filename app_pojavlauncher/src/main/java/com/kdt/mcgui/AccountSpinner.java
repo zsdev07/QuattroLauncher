@@ -27,25 +27,25 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 
-import net.kdt.pojavlaunch.PojavApplication;
-import net.kdt.pojavlaunch.Tools;
-import net.kdt.pojavlaunch.authenticator.AuthType;
-import net.kdt.pojavlaunch.authenticator.BackgroundLogin;
-import net.kdt.pojavlaunch.authenticator.accounts.Accounts;
-import net.kdt.pojavlaunch.authenticator.accounts.MinecraftAccount;
-import net.kdt.pojavlaunch.authenticator.impl.PresentedException;
-import net.kdt.pojavlaunch.authenticator.listener.LoginListener;
-import net.kdt.pojavlaunch.extra.ExtraConstants;
-import net.kdt.pojavlaunch.extra.ExtraCore;
-import net.kdt.pojavlaunch.extra.ExtraListener;
-import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper;
+import zx.offical.quattro.PojavApplication;
+import zx.offical.quattro.Tools;
+import zx.offical.quattro.authenticator.AuthType;
+import zx.offical.quattro.authenticator.BackgroundLogin;
+import zx.offical.quattro.authenticator.accounts.Accounts;
+import zx.offical.quattro.authenticator.accounts.MinecraftAccount;
+import zx.offical.quattro.authenticator.impl.PresentedException;
+import zx.offical.quattro.authenticator.listener.LoginListener;
+import zx.offical.quattro.extra.ExtraConstants;
+import zx.offical.quattro.extra.ExtraCore;
+import zx.offical.quattro.extra.ExtraListener;
+import zx.offical.quattro.progresskeeper.ProgressKeeper;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
 
 import fr.spse.extended_view.ExtendedTextView;
-import git.artdeell.mojo.R;
+import zx.offical.quattro.R;
 
 public class AccountSpinner extends AppCompatSpinner implements LoginListener, AdapterView.OnItemSelectedListener, ValueAnimator.AnimatorUpdateListener {
     private Adapter mAdapter;
