@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
 import net.kdt.pojavlaunch.lifecycle.ContextExecutor;
+import net.kdt.pojavlaunch.plugins.LibraryPlugin;
 import net.kdt.pojavlaunch.prefs.LauncherPreferences;
 import net.kdt.pojavlaunch.tasks.AsyncAssetManager;
 import net.kdt.pojavlaunch.utils.FileUtils;
@@ -61,6 +62,19 @@ public class PojavApplication extends Application {
 		});
 	}
 
+
+	private void logPluginDiscoveryStatus() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+			Log.i("PluginDiscovery", "Android 11+ package visibility active; discovery depends on manifest <queries> package list.");
+		}
+		LibraryPlugin anglePlugin = LibraryPlugin.discoverPlugin(this, LibraryPlugin.ID_ANGLE_PLUGIN);
+		LibraryPlugin ffmpegPlugin = LibraryPlugin.discoverPlugin(this, LibraryPlugin.ID_FFMPEG_PLUGIN);
+		Log.i("PluginDiscovery", "ANGLE (" + LibraryPlugin.ID_ANGLE_PLUGIN + "): "
+				+ (anglePlugin != null ? "available" : "not found"));
+		Log.i("PluginDiscovery", "FFmpeg (" + LibraryPlugin.ID_FFMPEG_PLUGIN + "): "
+				+ (ffmpegPlugin != null ? "available" : "not found"));
+	}
+
 	@Override
 	public void onCreate() {
 		ContextExecutor.setApplication(this);
@@ -89,6 +103,7 @@ public class PojavApplication extends Application {
 												.concat("/x86");
 			}
 			AsyncAssetManager.unpackRuntime(getAssets());
+			logPluginDiscoveryStatus();
 		} catch (Throwable throwable) {
 			Intent ferrorIntent = new Intent(this, FatalErrorActivity.class);
 			ferrorIntent.putExtra("throwable", throwable);

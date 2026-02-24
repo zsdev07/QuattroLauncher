@@ -6,15 +6,14 @@ import android.content.pm.PackageManager;
 import android.util.Log;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import git.artdeell.mojo.BuildConfig;
 
 public class LibraryPlugin {
     private static final String TAG = "LibraryPlugin";
 
     // Known plugins constants
-    public static final String ID_ANGLE_PLUGIN = "git.mojo.angle";
-    public static final String ID_FFMPEG_PLUGIN = "git.mojo.ffmpeg";
+    public static final String ID_ANGLE_PLUGIN = BuildConfig.PLUGIN_PACKAGE_ANGLE;
+    public static final String ID_FFMPEG_PLUGIN = BuildConfig.PLUGIN_PACKAGE_FFMPEG;
 
     private String appId;
     private String libraryPath;
@@ -29,8 +28,11 @@ public class LibraryPlugin {
             PackageInfo pluginPackage = ctx.getPackageManager().getPackageInfo(appId, PackageManager.GET_SHARED_LIBRARY_FILES);
             libraryPath = pluginPackage.applicationInfo.nativeLibraryDir;
 
+        } catch (PackageManager.NameNotFoundException e){
+            Log.i(TAG, "Plugin not visible/installed: " + appId);
+            return null;
         } catch (Exception e){
-            Log.e(TAG, "Plugin discover failed: " + e.getMessage());
+            Log.e(TAG, "Plugin discover failed for " + appId, e);
             return null;
         }
        return new LibraryPlugin(appId, libraryPath);
