@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.kdt.mcgui.ProgressLayout;
 
@@ -32,7 +33,31 @@ import java.util.Objects;
 import git.artdeell.mojo.R;
 
 public class InstanceInstaller implements ContextExecutorTask {
+    private static final String TAG = "InstanceInstaller";
     private static final File sLastInstallInfo = new File(Tools.DIR_CACHE, "last_installer.json");
+
+    private enum ErrorCategory {
+        URL_TRANSFORM,
+        DOWNLOAD,
+        STATE_WRITE,
+        STATE_READ,
+        STATE_CLEANUP,
+        PROFILE_UPDATE
+    }
+
+    private static final class InstallerException extends IOException {
+        public final ErrorCategory category;
+
+        InstallerException(ErrorCategory category, String message, Throwable cause) {
+            super(message, cause);
+            this.category = category;
+        }
+
+        InstallerException(ErrorCategory category, String message) {
+            super(message);
+            this.category = category;
+        }
+    }
 
     public String installerJar;
     private transient File installerJarFile;
@@ -43,76 +68,166 @@ public class InstanceInstaller implements ContextExecutorTask {
     public String installerSha1;
 
     private File installerJar() {
-        if(installerJarFile == null) return installerJarFile = new File(installerJar);
+        if (installerJarFile == null) return installerJarFile = new File(installerJar);
         return installerJarFile;
     }
 
-    private String installerDownloadUrl() throws IOException{
-        if(mTransformedUrl != null) return mTransformedUrl;
+    private String installerDownloadUrl() throws IOException {
+        if (mTransformedUrl != null) return mTransformedUrl;
         String newUrl;
-        if ("optifine".equals(installerUrlTransformer)) {
-            newUrl = OFDownloadPageScraper.run(installerDownloadUrl);
-        }else {
-            newUrl = installerDownloadUrl;
+        try {
+            if ("optifine".equals(installerUrlTransformer)) {
+                newUrl = OFDownloadPageScraper.run(installerDownloadUrl);
+            } else {
+                newUrl = installerDownloadUrl;
+            }
+        } catch (IOException e) {
+            throw new InstallerException(ErrorCategory.URL_TRANSFORM, "Failed to resolve installer URL", e);
+        } catch (RuntimeException e) {
+            throw new InstallerException(ErrorCategory.URL_TRANSFORM, "Unexpected failure while resolving installer URL", e);
         }
         mTransformedUrl = newUrl;
         return newUrl;
     }
 
-    private void writeLastInstaller() throws IOException {
-        JSONUtils.writeToFile(sLastInstallInfo, this);
+    private void writeLastInstallerAtomic() throws IOException {
+        File parent = sLastInstallInfo.getParentFile();
+        if (parent != null && !parent.exists() && !parent.mkdirs()) {
+            throw new InstallerException(ErrorCategory.STATE_WRITE, "Failed to create installer state directory");
+        }
+
+        File tempFile = new File(sLastInstallInfo.getAbsolutePath() + ".tmp");
+        JSONUtils.writeToFile(tempFile, this);
+
+        try {
+            if (sLastInstallInfo.exists() && !sLastInstallInfo.delete()) {
+                throw new InstallerException(ErrorCategory.STATE_WRITE, "Failed to replace previous installer state file");
+            }
+            if (!tempFile.renameTo(sLastInstallInfo)) {
+                throw new InstallerException(ErrorCategory.STATE_WRITE, "Failed to atomically publish installer state file");
+            }
+            logTransition("STATE_WRITTEN");
+        } finally {
+            if (tempFile.exists() && !tempFile.delete()) {
+                Log.w(TAG, "Failed to delete temporary installer state file: " + tempFile.getAbsolutePath());
+            }
+        }
+    }
+
+    private static void logTransition(String transition) {
+        Log.i(TAG, "Lifecycle transition: " + transition);
+    }
+
+    private static void deleteFileIfExists(File file, String purpose) throws IOException {
+        if (file.exists() && !file.delete()) {
+            throw new InstallerException(ErrorCategory.STATE_CLEANUP, "Failed to delete " + purpose + ": " + file.getAbsolutePath());
+        }
+    }
+
+    private static void clearInstallerStateFilesQuietly() {
+        if (sLastInstallInfo.isFile() && !sLastInstallInfo.delete()) {
+            Log.w(TAG, "Failed to delete installer state file during recovery: " + sLastInstallInfo.getAbsolutePath());
+        }
+        File tempFile = new File(sLastInstallInfo.getAbsolutePath() + ".tmp");
+        if (tempFile.isFile() && !tempFile.delete()) {
+            Log.w(TAG, "Failed to delete installer temp state file during recovery: " + tempFile.getAbsolutePath());
+        }
     }
 
     public void threadedStart() throws IOException {
         try {
+            logTransition("DOWNLOAD_STARTED");
             final byte[] buffer = new byte[8192];
             final DownloaderProgressWrapper wrapper = new DownloaderProgressWrapper(
                     R.string.mcl_launch_downloading_progress, ProgressLayout.INSTANCE_INSTALL
             );
             wrapper.extraString = installerJar().getName();
-            DownloadUtils.ensureSha1(installerJar(), installerSha1, ()->{
+            DownloadUtils.ensureSha1(installerJar(), installerSha1, () -> {
                 DownloadUtils.downloadFileMonitored(installerDownloadUrl(), installerJar(), buffer, wrapper);
                 return null;
             });
+            logTransition("DOWNLOAD_COMPLETED");
             ContextExecutor.execute(this);
+            logTransition("GUI_INSTALLER_DISPATCHED");
+        } catch (IOException e) {
+            throw new InstallerException(ErrorCategory.DOWNLOAD, "Installer download failed", e);
+        } catch (RuntimeException e) {
+            throw new InstallerException(ErrorCategory.DOWNLOAD, "Unexpected installer download failure", e);
         } finally {
             ProgressLayout.clearProgress(ProgressLayout.INSTANCE_INSTALL);
         }
     }
 
-    public static void postInstallCheck(AssetManager assetManager) throws IOException {
-        if(!sLastInstallInfo.exists() || !sLastInstallInfo.isFile()) return;
-        InstanceInstaller lastInstaller = JSONUtils.readFromFile(sLastInstallInfo, InstanceInstaller.class);
-        boolean ignored = lastInstaller.installerJar().delete();
-        if(!sLastInstallInfo.delete()) throw new IOException("Failed to delete mod installer info");
-        String targetVersionId = ProfileWatcher.consumePendingVersion(assetManager);
-        if(targetVersionId == null) return;
-        for(Instance instance : Instances.loadAllInstances()) {
-            if(!lastInstaller.equals(instance.installer)) continue;
-            instance.installer = null;
-            instance.versionId = targetVersionId;
-            instance.write();
+    private static InstanceInstaller readLastInstallerState() throws IOException {
+        try {
+            InstanceInstaller state = JSONUtils.readFromFile(sLastInstallInfo, InstanceInstaller.class);
+            if (state == null || state.installerJar == null) {
+                throw new InstallerException(ErrorCategory.STATE_READ, "Installer state is empty or invalid");
+            }
+            return state;
+        } catch (IOException e) {
+            throw new InstallerException(ErrorCategory.STATE_READ, "Failed to read installer state", e);
+        } catch (RuntimeException e) {
+            throw new InstallerException(ErrorCategory.STATE_READ, "Corrupted installer state JSON", e);
         }
-        ExtraCore.setValue(ExtraConstants.REFRESH_VERSION_SPINNER, null);
+    }
+
+    public static void postInstallCheck(AssetManager assetManager) throws IOException {
+        if (!sLastInstallInfo.exists() || !sLastInstallInfo.isFile()) return;
+
+        logTransition("POST_INSTALL_CHECK_STARTED");
+        InstanceInstaller lastInstaller = readLastInstallerState();
+        try {
+            String targetVersionId = ProfileWatcher.consumePendingVersion(assetManager);
+            if (targetVersionId == null) {
+                logTransition("POST_INSTALL_NO_PENDING_VERSION");
+                return;
+            }
+
+            for (Instance instance : Instances.loadAllInstances()) {
+                if (!lastInstaller.equals(instance.installer)) continue;
+                instance.installer = null;
+                instance.versionId = targetVersionId;
+                instance.write();
+            }
+            ExtraCore.setValue(ExtraConstants.REFRESH_VERSION_SPINNER, null);
+            logTransition("POST_INSTALL_INSTANCE_UPDATED");
+        } catch (IOException e) {
+            throw new InstallerException(ErrorCategory.PROFILE_UPDATE, "Post-install profile update failed", e);
+        } catch (RuntimeException e) {
+            throw new InstallerException(ErrorCategory.PROFILE_UPDATE, "Unexpected post-install profile update failure", e);
+        } finally {
+            deleteFileIfExists(lastInstaller.installerJar(), "installer jar");
+            deleteFileIfExists(sLastInstallInfo, "installer state");
+            deleteFileIfExists(new File(sLastInstallInfo.getAbsolutePath() + ".tmp"), "installer temp state");
+            logTransition("POST_INSTALL_STATE_CLEANED");
+        }
     }
 
     public static void postInstallCheck(Context context) {
         try {
             InstanceInstaller.postInstallCheck(context.getAssets());
-        }catch (Exception e) {
+        } catch (InstallerException e) {
+            Log.e(TAG, "Post-install check failed [" + e.category + "]", e);
+            clearInstallerStateFilesQuietly();
             Tools.showError(context, e);
-            if (sLastInstallInfo.isFile()) {
-                boolean ignored = sLastInstallInfo.delete();
-            }
+        } catch (IOException e) {
+            Log.e(TAG, "Post-install check failed [IO]", e);
+            clearInstallerStateFilesQuietly();
+            Tools.showError(context, e);
         }
     }
 
     public void start() {
         ProgressLayout.setProgress(ProgressLayout.INSTANCE_INSTALL, 0);
-        PojavApplication.sExecutorService.execute(()->{
+        PojavApplication.sExecutorService.execute(() -> {
             try {
                 threadedStart();
-            }catch (Exception e) {
+            } catch (InstallerException e) {
+                Log.e(TAG, "Installer start failed [" + e.category + "]", e);
+                Tools.showErrorRemote(e);
+            } catch (IOException e) {
+                Log.e(TAG, "Installer start failed [IO]", e);
                 Tools.showErrorRemote(e);
             }
         });
@@ -139,9 +254,23 @@ public class InstanceInstaller implements ContextExecutorTask {
     public void executeWithActivity(Activity activity) {
         try {
             ProfileWatcher.installDefaultProfiles(activity.getAssets());
-            writeLastInstaller();
-        }catch (Exception e) {
+            logTransition("PREPARE_INSTALLER_STATE");
+            writeLastInstallerAtomic();
+        } catch (InstallerException e) {
+            Log.e(TAG, "Failed before launching GUI installer [" + e.category + "]", e);
+            clearInstallerStateFilesQuietly();
             Tools.showError(activity, e);
+            return;
+        } catch (IOException e) {
+            Log.e(TAG, "Failed before launching GUI installer [IO]", e);
+            clearInstallerStateFilesQuietly();
+            Tools.showError(activity, e);
+            return;
+        } catch (RuntimeException e) {
+            InstallerException wrapped = new InstallerException(ErrorCategory.PROFILE_UPDATE, "Profile preparation failed", e);
+            Log.e(TAG, "Failed before launching GUI installer [" + wrapped.category + "]", wrapped);
+            clearInstallerStateFilesQuietly();
+            Tools.showError(activity, wrapped);
             return;
         }
         Intent intent = new Intent(activity, JavaGUILauncherActivity.class);
@@ -150,6 +279,7 @@ public class InstanceInstaller implements ContextExecutorTask {
         extras.putString("modPath", installerJar);
         intent.putExtras(extras);
         activity.startActivity(intent);
+        logTransition("GUI_INSTALLER_STARTED");
     }
 
     @Override
