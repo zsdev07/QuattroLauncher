@@ -14,11 +14,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import git.artdeell.mojo.R;
+import zx.offical.quattro.R;
 
-import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper;
-import net.kdt.pojavlaunch.progresskeeper.ProgressListener;
-import net.kdt.pojavlaunch.progresskeeper.TaskCountListener;
+import zx.offical.quattro.progresskeeper.ProgressKeeper;
+import zx.offical.quattro.progresskeeper.ProgressListener;
+import zx.offical.quattro.progresskeeper.TaskCountListener;
 
 import java.util.ArrayList;
 

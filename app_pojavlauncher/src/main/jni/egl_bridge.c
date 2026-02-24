@@ -52,7 +52,7 @@ EXTERNAL_API void pojavTerminate() {
 }
 
 JNIEXPORT void JNICALL
-Java_net_kdt_pojavlaunch_utils_JREUtils_applyWindowSize(ABI_COMPAT JNIEnv *env, ABI_COMPAT jclass clazz) {
+Java_zx_offical_quattro_utils_JREUtils_applyWindowSize(ABI_COMPAT JNIEnv *env, ABI_COMPAT jclass clazz) {
     if(pojav_environ->pojavWindow == NULL) return;
     int32_t w = pojav_environ->savedWidth;
     int32_t h = pojav_environ->savedHeight;
@@ -62,15 +62,15 @@ Java_net_kdt_pojavlaunch_utils_JREUtils_applyWindowSize(ABI_COMPAT JNIEnv *env, 
     }
 }
 
-JNIEXPORT void JNICALL Java_net_kdt_pojavlaunch_utils_JREUtils_setupBridgeWindow(JNIEnv* env, ABI_COMPAT jclass clazz, jobject surface) {
+JNIEXPORT void JNICALL Java_zx_offical_quattro_utils_JREUtils_setupBridgeWindow(JNIEnv* env, ABI_COMPAT jclass clazz, jobject surface) {
     pojav_environ->pojavWindow = ANativeWindow_fromSurface(env, surface);
     ANativeWindow_acquire(pojav_environ->pojavWindow);
-    Java_net_kdt_pojavlaunch_utils_JREUtils_applyWindowSize(env, clazz);
+    Java_zx_offical_quattro_utils_JREUtils_applyWindowSize(env, clazz);
     if(br_setup_window != NULL) br_setup_window();
 }
 
 JNIEXPORT void JNICALL
-Java_net_kdt_pojavlaunch_utils_JREUtils_releaseBridgeWindow(ABI_COMPAT JNIEnv *env, ABI_COMPAT jclass clazz) {
+Java_zx_offical_quattro_utils_JREUtils_releaseBridgeWindow(ABI_COMPAT JNIEnv *env, ABI_COMPAT jclass clazz) {
     pojav_environ->pojavWindow = NULL;
     if(br_setup_window != NULL) br_setup_window();
 }

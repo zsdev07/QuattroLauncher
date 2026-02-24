@@ -53,7 +53,7 @@ static bool init_hooks() {
 }
 
 JNIEXPORT void JNICALL
-Java_net_kdt_pojavlaunch_utils_JREUtils_initializeHooks(JNIEnv *env, jclass clazz) {
+Java_zx_offical_quattro_utils_JREUtils_initializeHooks(JNIEnv *env, jclass clazz) {
     bool hooks_ready = init_hooks();
     if(!hooks_ready) {
         LOGE("Failed to initialize native hooks!");
