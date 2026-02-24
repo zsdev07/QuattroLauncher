@@ -21,9 +21,9 @@ import android.view.*;
 import android.widget.*;
 import java.io.*;
 import java.util.*;
-import net.kdt.pojavlaunch.*;
+import zx.offical.quattro.*;
 
-import git.artdeell.mojo.R;
+import zx.offical.quattro.R;
 
 /**
  * List adapter for Files.

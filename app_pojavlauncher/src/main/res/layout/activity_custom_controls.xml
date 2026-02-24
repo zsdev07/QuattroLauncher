@@ -14,7 +14,7 @@
 		android:layout_width="wrap_content">
 
 
-		<net.kdt.pojavlaunch.customcontrols.handleview.DrawerPullButton
+		<zx.offical.quattro.customcontrols.handleview.DrawerPullButton
 			android:id="@+id/drawer_button"
 			android:layout_width="40dp"
 			android:layout_height="20dp"
@@ -32,12 +32,12 @@
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintTop_toTopOf="parent" />
 
-		<net.kdt.pojavlaunch.customcontrols.ControlLayout
+		<zx.offical.quattro.customcontrols.ControlLayout
 			android:id="@+id/customctrl_controllayout"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent">
 
-		</net.kdt.pojavlaunch.customcontrols.ControlLayout>
+		</zx.offical.quattro.customcontrols.ControlLayout>
 
 	</androidx.constraintlayout.widget.ConstraintLayout>
 

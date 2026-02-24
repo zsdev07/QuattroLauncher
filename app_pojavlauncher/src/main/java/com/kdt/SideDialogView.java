@@ -20,8 +20,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.content.res.ResourcesCompat;
 
-import git.artdeell.mojo.R;
-import net.kdt.pojavlaunch.Tools;
+import zx.offical.quattro.R;
+import zx.offical.quattro.Tools;
 
 /**
  * The base class for side dialog views

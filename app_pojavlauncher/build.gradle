@@ -50,7 +50,7 @@ configurations {
 }
 
 android {
-    namespace 'git.artdeell.mojo'
+    namespace 'zx.offical.quattro'
 
     compileSdk = 36
 
@@ -74,13 +74,21 @@ android {
     }
 
     defaultConfig {
-        applicationId "git.artdeell.mojo"
+        applicationId "zx.offical.quattro"
+        def pluginPackageAngle = "git.mojo.angle"
+        def pluginPackageFfmpeg = "git.mojo.ffmpeg"
         minSdkVersion 21
         targetSdkVersion 35
         versionCode getDateSeconds()
         versionName getVersionName()
         multiDexEnabled false //important
         resValue 'string', 'curseforge_api_key', getCFApiKey()
+        manifestPlaceholders += [
+                pluginPackageAngle : pluginPackageAngle,
+                pluginPackageFfmpeg: pluginPackageFfmpeg
+        ]
+        buildConfigField 'String', 'PLUGIN_PACKAGE_ANGLE', '"' + pluginPackageAngle + '"'
+        buildConfigField 'String', 'PLUGIN_PACKAGE_FFMPEG', '"' + pluginPackageFfmpeg + '"'
     }
 
     flavorDimensions  = ["runtime"]
@@ -103,8 +111,8 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.customDebug
-            resValue 'string', 'application_package', 'git.artdeell.mojo.debug'
-            resValue 'string', 'storageProviderAuthorities', 'git.artdeell.mojo.scoped.gamefolder.debug'
+            resValue 'string', 'application_package', 'zx.offical.quattro.debug'
+            resValue 'string', 'storageProviderAuthorities', 'zx.offical.quattro.scoped.gamefolder.debug'
         }
         proguard {
             initWith debug
@@ -123,8 +131,8 @@ android {
             // defaultConfig already set
             // multiDexEnabled = true
             // debuggable = true
-            resValue 'string', 'storageProviderAuthorities', 'git.artdeell.mojo.scoped.gamefolder'
-            resValue 'string', 'application_package', 'git.artdeell.mojo'
+            resValue 'string', 'storageProviderAuthorities', 'zx.offical.quattro.scoped.gamefolder'
+            resValue 'string', 'application_package', 'zx.offical.quattro'
         }
         gplay {
             initWith release

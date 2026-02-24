@@ -20,19 +20,19 @@ import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import git.artdeell.mojo.R;
+import zx.offical.quattro.R;
 
-import net.kdt.pojavlaunch.PojavApplication;
-import net.kdt.pojavlaunch.Tools;
-import net.kdt.pojavlaunch.extra.ExtraConstants;
-import net.kdt.pojavlaunch.extra.ExtraCore;
-import net.kdt.pojavlaunch.extra.ExtraListener;
-import net.kdt.pojavlaunch.fragments.InstanceEditorFragment;
-import net.kdt.pojavlaunch.fragments.ProfileTypeSelectFragment;
-import net.kdt.pojavlaunch.instances.DisplayInstance;
-import net.kdt.pojavlaunch.instances.Instances;
-import net.kdt.pojavlaunch.instances.InstanceAdapter;
-import net.kdt.pojavlaunch.instances.InstanceAdapterExtra;
+import zx.offical.quattro.PojavApplication;
+import zx.offical.quattro.Tools;
+import zx.offical.quattro.extra.ExtraConstants;
+import zx.offical.quattro.extra.ExtraCore;
+import zx.offical.quattro.extra.ExtraListener;
+import zx.offical.quattro.fragments.InstanceEditorFragment;
+import zx.offical.quattro.fragments.ProfileTypeSelectFragment;
+import zx.offical.quattro.instances.DisplayInstance;
+import zx.offical.quattro.instances.Instances;
+import zx.offical.quattro.instances.InstanceAdapter;
+import zx.offical.quattro.instances.InstanceAdapterExtra;
 
 import java.io.IOException;
 

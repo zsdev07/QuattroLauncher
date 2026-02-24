@@ -6,7 +6,7 @@ import android.util.*;
 
 import androidx.core.content.res.ResourcesCompat;
 
-import git.artdeell.mojo.R;
+import zx.offical.quattro.R;
 
 public class MineButton extends androidx.appcompat.widget.AppCompatButton {
 	

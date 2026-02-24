@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app2="http://schemas.android.com/apk/res-auto">
 
-    <net.kdt.pojavlaunch.prefs.BackButtonPreference/>
+    <zx.offical.quattro.prefs.BackButtonPreference/>
 
     <PreferenceCategory android:title="@string/preference_category_java_tweaks">
         <Preference
@@ -19,7 +19,7 @@
             android:summary="@string/mcl_setting_subtitle_javaargs"
             android:title="@string/mcl_setting_title_javaargs" />
 
-        <net.kdt.pojavlaunch.prefs.CustomSeekBarPreference
+        <zx.offical.quattro.prefs.CustomSeekBarPreference
             android:key="allocation"
 
             android:summary="@string/mcl_memory_allocation_subtitle"

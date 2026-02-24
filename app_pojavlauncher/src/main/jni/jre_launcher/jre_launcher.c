@@ -40,7 +40,7 @@ static bool apiRequiresHints() {
 }
 
 void throwException(JNIEnv *env, jint loadStage, jint errorCode, const char* errorInfo) {
-    jclass loadException = (*env)->FindClass(env, "net/kdt/pojavlaunch/utils/jre/VMLoadException");
+    jclass loadException = (*env)->FindClass(env, "zx/offical/quattro/utils/jre/VMLoadException");
     if(loadException == NULL) {
         jthrowable exception = (*env)->ExceptionOccurred(env);
         (*env)->Throw(env, exception);
@@ -196,7 +196,7 @@ static void prepareSignalHandlers() {
 extern bool installClassLoaderHooks(JNIEnv *env, JNIEnv* vm_env);
 
 JNIEXPORT jboolean JNICALL
-Java_net_kdt_pojavlaunch_utils_jre_JavaRunner_nativeLoadJVM(JNIEnv *env, jclass clazz, jstring vmpath, jobjectArray java_args, jstring mainClass, jobjectArray appArgs, jboolean hasJavaAgents) {
+Java_zx_offical_quattro_utils_jre_JavaRunner_nativeLoadJVM(JNIEnv *env, jclass clazz, jstring vmpath, jobjectArray java_args, jstring mainClass, jobjectArray appArgs, jboolean hasJavaAgents) {
     java_vm_t java_vm;
     setup_abort_wait();
     prepareSignalHandlers();

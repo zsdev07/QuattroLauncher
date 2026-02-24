@@ -22,7 +22,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
 
     <application
-        android:name="net.kdt.pojavlaunch.PojavApplication"
+        android:name="zx.offical.quattro.PojavApplication"
         android:allowBackup="true"
         android:allowNativeHeapPointerTagging="false"
         android:appCategory="game"
@@ -37,7 +37,7 @@
         android:networkSecurityConfig="@xml/netconfig"
         tools:ignore="UnusedAttribute">
         <activity
-            android:name="net.kdt.pojavlaunch.MissingStorageActivity"
+            android:name="zx.offical.quattro.MissingStorageActivity"
             android:exported="false" />
 
         <meta-data
@@ -45,7 +45,7 @@
             android:value="ratio_float" />
 
         <activity
-            android:name="net.kdt.pojavlaunch.TestStorageActivity"
+            android:name="zx.offical.quattro.TestStorageActivity"
             android:exported="true"
             android:label="@string/app_short_name"
             android:launchMode="singleTop">
@@ -56,11 +56,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="net.kdt.pojavlaunch.LauncherActivity"
+            android:name="zx.offical.quattro.LauncherActivity"
             android:label="@string/app_short_name"
             android:windowSoftInputMode="adjustResize"/>
         <activity
-            android:name="net.kdt.pojavlaunch.ImportControlActivity"
+            android:name="zx.offical.quattro.ImportControlActivity"
             android:configChanges="keyboard|keyboardHidden"
             android:exported="true"
             android:launchMode="singleInstance"
@@ -80,23 +80,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="net.kdt.pojavlaunch.FatalErrorActivity"
+            android:name="zx.offical.quattro.FatalErrorActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|keyboard|navigation"
             android:theme="@style/Theme.AppCompat.DayNight.Dialog" />
-        <activity android:name="net.kdt.pojavlaunch.ShowErrorActivity"
+        <activity android:name="zx.offical.quattro.ShowErrorActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|keyboard|navigation"
             android:theme="@style/Theme.AppCompat.DayNight.Dialog" />
         <activity
-            android:name="net.kdt.pojavlaunch.ExitActivity"
+            android:name="zx.offical.quattro.ExitActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|keyboard|navigation"
             android:theme="@style/Theme.AppCompat.DayNight.Dialog" />
         <activity
             android:process=":gui_installer"
-            android:name="net.kdt.pojavlaunch.JavaGUILauncherActivity"
+            android:name="zx.offical.quattro.JavaGUILauncherActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|smallestScreenSize|screenLayout|keyboard|navigation|uiMode"
             android:screenOrientation="sensorLandscape" />
         <activity
-            android:name="net.kdt.pojavlaunch.CustomControlsActivity"
+            android:name="zx.offical.quattro.CustomControlsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|keyboard|navigation"
             android:exported="false"
             android:screenOrientation="sensorLandscape">
@@ -107,14 +107,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="net.kdt.pojavlaunch.MainActivity"
+            android:name="zx.offical.quattro.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|smallestScreenSize|screenLayout|keyboard|navigation|uiMode"
             android:launchMode="singleTop"
             android:process=":game"
             android:screenOrientation="sensorLandscape" />
 
         <provider
-            android:name="net.kdt.pojavlaunch.scoped.FolderProvider"
+            android:name="zx.offical.quattro.scoped.FolderProvider"
             android:authorities="@string/storageProviderAuthorities"
             android:exported="true"
             android:grantUriPermissions="true"
@@ -124,16 +124,16 @@
             </intent-filter>
         </provider>
 
-        <service android:name="net.kdt.pojavlaunch.services.ProgressService"
+        <service android:name="zx.offical.quattro.services.ProgressService"
             android:foregroundServiceType="dataSync"/>
-        <service android:name="net.kdt.pojavlaunch.services.GameService" android:process=":game"
+        <service android:name="zx.offical.quattro.services.GameService" android:process=":game"
             android:foregroundServiceType="specialUse">
             <property android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
                 android:value="This application is intended to run a 3rd-party piece of software which cannot be managed using the activity's saved instance state. This service is used for background persistence of this piece of software."/>
         </service>
     </application>
     <queries>
-        <package android:name="net.kdt.pojavlaunch.ffmpeg"/>
-        <package android:name="git.mojo.angle"/>
+        <package android:name="${pluginPackageFfmpeg}"/>
+        <package android:name="${pluginPackageAngle}"/>
     </queries>
 </manifest>
