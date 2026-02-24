@@ -64,9 +64,9 @@ jint JNI_OnLoad(JavaVM* vm, __attribute__((unused)) void* reserved) {
         pojav_environ->method_accessAndroidClipboard = (*dvEnv)->GetStaticMethodID(dvEnv, pojav_environ->bridgeClazz, "accessAndroidClipboard", "(ILjava/lang/String;)Ljava/lang/String;");
         pojav_environ->method_onGrabStateChanged = (*dvEnv)->GetStaticMethodID(dvEnv, pojav_environ->bridgeClazz, "onGrabStateChanged", "(Z)V");
         pojav_environ->method_onDirectInputEnable = (*dvEnv)->GetStaticMethodID(dvEnv, pojav_environ->bridgeClazz, "onDirectInputEnable", "()V");
-        pojav_environ->method_createCursor = (*dvEnv)->GetStaticMethodID(dvEnv, pojav_environ->bridgeClazz, "createCursor", "(Ljava/nio/ByteBuffer;IIII)Lnet/kdt/pojavlaunch/customcontrols/mouse/CursorContainer;");
-        pojav_environ->method_setCursor = (*dvEnv)->GetStaticMethodID(dvEnv, pojav_environ->bridgeClazz, "setCursor", "(Lnet/kdt/pojavlaunch/customcontrols/mouse/CursorContainer;)V");
-        pojav_environ->method_removeCursor = (*dvEnv)->GetStaticMethodID(dvEnv, pojav_environ->bridgeClazz, "removeCursor", "(Lnet/kdt/pojavlaunch/customcontrols/mouse/CursorContainer;)V");
+        pojav_environ->method_createCursor = (*dvEnv)->GetStaticMethodID(dvEnv, pojav_environ->bridgeClazz, "createCursor", "(Ljava/nio/ByteBuffer;IIII)Lzx/offical/quattro/customcontrols/mouse/CursorContainer;");
+        pojav_environ->method_setCursor = (*dvEnv)->GetStaticMethodID(dvEnv, pojav_environ->bridgeClazz, "setCursor", "(Lzx/offical/quattro/customcontrols/mouse/CursorContainer;)V");
+        pojav_environ->method_removeCursor = (*dvEnv)->GetStaticMethodID(dvEnv, pojav_environ->bridgeClazz, "removeCursor", "(Lzx/offical/quattro/customcontrols/mouse/CursorContainer;)V");
         pojav_environ->isUseStackQueueCall = JNI_FALSE;
     } else if (pojav_environ->dalvikJavaVMPtr != vm) {
         LOGI("Saving JVM environ...");
@@ -553,7 +553,7 @@ static bool tryCriticalNative(JNIEnv *env) {
     static const JNINativeMethod testJNIMethod[] = {
             { "testCriticalNative", "(II)V", dvm_testCriticalNative}
     };
-    jclass criticalNativeTest = (*env)->FindClass(env, "net/kdt/pojavlaunch/CriticalNativeTest");
+    jclass criticalNativeTest = (*env)->FindClass(env, "zx/offical/quattro/CriticalNativeTest");
     if(criticalNativeTest == NULL) {
         LOGD("No CriticalNativeTest class found !");
         (*env)->ExceptionClear(env);
