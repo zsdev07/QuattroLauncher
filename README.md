@@ -32,7 +32,7 @@ QuattroLauncher is built using the Gradle build system. If you wish to contribut
 ### Quick Start (Debug Build)
 1. **Clone the Repo:**
    ```bash
-   git clone [https://github.com/zdev07/QuattroLauncher.git](https://github.com/zdev07/QuattroLauncher.git)
+   git clone [https://github.com/zsdev07/QuattroLauncher.git]
 
 2. **Execute Build:**
    ```bash
