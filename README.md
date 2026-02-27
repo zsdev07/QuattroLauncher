@@ -1,86 +1,65 @@
-<H1 align="center">MojoLauncher</H1>
+<h1 align="center">QuattroLauncher</h1>
 
-<a href="https://github.com/MojoLauncher/MojoLauncher/blob/v3_openjdk/README_RU.md">Readme на русском</a>
+<p align="center">
+  <strong>The Ultimate High-Performance Minecraft: Java Edition Launcher for Android</strong>
+</p>
 
-<img src="https://github.com/MojoLauncher/MojoLauncher/blob/v3_openjdk/app_pojavlauncher/src/main/assets/pojavlauncher.png" align="left" width="150" height="150" alt="MojoLauncher logo">
+<div align="center">
+  <img src="app_pojavlauncher/src/main/res/mipmap-xxxhdpi/ic_launcher.png" width="130" height="150" alt="QuattroLauncher logo">
+</div>
 
-[![Android CI](https://github.com/MojoLauncher/MojoLauncher/workflows/Android%20CI/badge.svg)](https://github.com/MojoLauncher/MojoLauncher/actions)
-[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/MojoLauncher/MojoLauncher)](https://github.com/MojoLauncher/MojoLauncher/actions)
-[![Crowdin](https://badges.crowdin.net/pojavlauncher/localized.svg)](https://crowdin.com/project/pojavlauncher)
-[![Discord](https://img.shields.io/discord/1365346109131722753.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/VHdwQFsaGX)
+---
 
-* MojoLauncher is a launcher, based on [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher), that allows you to play Minecraft: Java Edition on your Android device!
+## 📖 Introduction
+**QuattroLauncher** is a specialized, community-driven fork designed to bring the complete Minecraft: Java Edition experience to the palm of your hand. By leveraging advanced wrapper technologies and a custom-tuned OpenJDK environment, QuattroLauncher allows users to run desktop-grade Minecraft on Android devices with high stability and optimized frame rates.
 
-* It can run almost every version of Minecraft, allowing you to use .jar only installers to install modloaders such as [Forge](https://files.minecraftforge.net/) and [Fabric](http://fabricmc.net/) and mods like [OptiFine](https://optifine.net).
+Unlike standard mobile versions, QuattroLauncher provides access to the true Java ecosystem, including the ability to play on major servers, use complex redstone mechanics, and experience the latest snapshots (up to 1.21+) as soon as they are released by Mojang.
 
-## Navigation
-- [Introduction](#introduction)  
-- [Getting MojoLauncher](#getting-mojolauncher)
-- [Building](#building) 
-- [Current roadmap](#current-roadmap) 
-- [License](#license) 
-- [Contributing](#contributing) 
-- [Credits & Third party components and their licenses](#credits--third-party-components-and-their-licenses-if-available)
+---
 
-## Introduction 
-* MojoLauncher is a Minecraft: Java Edition launcher for Android based on [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher)
-* This launcher can launch almost all available Minecraft versions ranging from rd-132211 to 1.21 snapshots (including Combat Test versions). 
-* Modding via Forge and Fabric are also supported. 
+## ✨ Key Features
+* **Universal Version Support:** Play almost any version ever released, from the very first "RD" versions to the latest Experimental Snapshots.
+* **Native Modding Support:** Seamlessly install and run popular mod loaders including **Forge**, **Fabric**, and **Quilt**. It also features built-in support for **OptiFine** to maximize performance on budget devices.
+* **Customized Visual Identity:** Features a deep-black aesthetic with polished accents, designed for modern OLED screens and long gaming sessions.
+* **Advanced Input System:** A completely rewritten virtual control system that allows for highly customizable layouts, multi-touch support, and full external gamepad/keyboard mapping.
+* **Multi-Architecture Engine:** Full support for ARM32, ARM64, x86, and x86_64, ensuring compatibility across a vast range of smartphones and tablets.
 
-## Getting MojoLauncher
+---
 
-You can get MojoLauncher via three methods:
+## 🛠️ Building & Development
+QuattroLauncher is built using the Gradle build system. If you wish to contribute or build your own custom version, follow the instructions below:
 
-1. You can get the prebuilt app from [automatic builds](https://github.com/MojoLauncher/MojoLauncher/actions).
+### Quick Start (Debug Build)
+1. **Clone the Repo:**
+   ```bash
+   git clone [https://github.com/zdev07/QuattroLauncher.git](https://github.com/zdev07/QuattroLauncher.git)
 
-2. You can get it from Google Play by clicking on this badge:
-[![Google Play](https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=git.artdeell.mojo)
+2. **Execute Build:**
+   ```bash
+   ./gradlew :app_pojavlauncher:assembleDebug
 
-3. You can [build](#building) from source.
-## Building   
-* Build the launcher (it will automatically download all required components)
-```
-./gradlew :app_pojavlauncher:assembleDebug
-```
-(Replace `./gradlew` with `.\gradlew.bat` if you are building on Windows).
+### Official Release 
 
-## Current roadmap
-- [x] Instance system in favor of profiles
-- [x] Out-of-the box 1.21.5 support
-- [ ] LTW: resolve issues with Create
-- [ ] LTW: enable compute shader/image extensions
-- [ ] LTW: switch to a color-renderable format for framebuffers
-- [ ] Modpack/mod management tool
-- [ ] mrpack/CurseForge zip import
-- [ ] MMC-compatible instance import
-- [ ] Patch-on-dlopen for mod native libraries
-- [ ] Replace Holy-GL4ES 1.1.5 with KW (maybe? need to figure out requirements)
+For a production-ready APK that is optimized for speed and size, use the release task:
 
-## Known Issues
-- Some physical mice may have very slow mouse speed
-- On Holy GL4ES, large texture atlases may be distorted (resulting in stretched/blocky textures in modpacks)
-- Probably more, that's why we have a bug tracker ;) 
+```./gradlew :app_pojavlauncher:assembleRelease```
 
-## License
-- MojoLauncher is licensed under [GNU LGPLv3](https://github.com/MojoLauncher/MojoLauncher/blob/v3_openjdk/LICENSE).
+The final APK will be located in: app_pojavlauncher/build/outputs/apk/release/
 
-## Contributing
-Contributions are welcome! We welcome any type of contribution, not only code. For example, you can help the wiki shape up. You can help the [translation](https://crowdin.com/project/pojavlauncher) too!
+### 📥 Downloads & Installation
 
+Official stable builds and experimental "bleeding-edge" updates are available in our GitHub Releases section.
+1. Download the .apk file from the latest release.
+2. Enable "Install from Unknown Sources" in your Android settings.
+3. Install the APK and sign in with your Microsoft account to begin playing.
 
-Any code change to this repository should be submitted as a pull request. The description should explain what the code does and give steps to execute it.
+### 📜 Credits & License
 
-## Credits & Third party components and their licenses (if available)
-- [PojavLauncher](https://github.com/PojavLauncherTeam/PojavLauncher): [GNU LGPLv3 License](https://github.com/PojavLauncherTeam/PojavLauncher/blob/v3_openjdk/LICENSE)
-- [Boardwalk](https://github.com/zhuowei/Boardwalk) (JVM Launcher): Unknown License/[Apache License 2.0](https://github.com/zhuowei/Boardwalk/blob/master/LICENSE) or GNU GPLv2.
-- Android Support Libraries: [Apache License 2.0](https://android.googlesource.com/platform/prebuilts/maven_repo/android/+/master/NOTICE.txt).
-- [GL4ES](https://github.com/PojavLauncherTeam/gl4es): [MIT License](https://github.com/ptitSeb/gl4es/blob/master/LICENSE).<br>
-- [OpenJDK](https://github.com/PojavLauncherTeam/openjdk-multiarch-jdk8u): [GNU GPLv2 License](https://openjdk.java.net/legal/gplv2+ce.html).<br>
-- [LWJGL3](https://github.com/MojoLauncher/lwjgl3): [BSD-3 License](https://github.com/LWJGL/lwjgl3/blob/master/LICENSE.md).
-- [Mesa 3D Graphics Library](https://gitlab.freedesktop.org/mesa/mesa): [MIT License](https://docs.mesa3d.org/license.html).
-- [pro-grade](https://github.com/pro-grade/pro-grade) (Java sandboxing security manager): [Apache License 2.0](https://github.com/pro-grade/pro-grade/blob/master/LICENSE.txt).
-- [bhook](https://github.com/bytedance/bhook) (Used for exit code trapping): [MIT license](https://github.com/bytedance/bhook/blob/main/LICENSE).
-- [Authlib-Injector](https://github.com/yushijinhun/authlib-injector) (Used for authorisation via ely.by): [AGPL-3.0](https://github.com/yushijinhun/authlib-injector/blob/develop/LICENSE).
-- [alsoft](https://github.com/kcat/openal-soft/) (Audio output library): [GNU LIBRARY GENERAL PUBLIC LICENSE](https://github.com/kcat/openal-soft/blob/master/COPYING) and [modified PFFFT](https://github.com/kcat/openal-soft/blob/master/LICENSE-pffft).
-- [oboe](https://github.com/google/oboe): [Apache License 2.0](https://github.com/google/oboe/blob/main/LICENSE).
-- Thanks to [Mineskin](https://mineskin.eu/) for providing Minecraft avatars.
+QuattroLauncher is a fork based on the incredible foundational work of the PojavLauncher team. We owe a debt of gratitude to the original developers and the Boardwalk project.
+
+``•License: This project is licensed under the GNU LGPLv3.``
+``•Technologies: Built with OpenJDK, LWJGL 3, and GL4ES.``
+
+<p align="center">
+<strong>Maintained with passion by zdev07</strong>
+</p>
