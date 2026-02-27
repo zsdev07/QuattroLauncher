@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Purple palette -->
+    <color name="quattro_purple">#7C3AED</color>
+    <color name="quattro_purple_dark">#4C1D95</color>
+    <color name="quattro_purple_accent">#A78BFA</color>
+
+    <!-- UI base -->
+    <color name="background_app">#0B0B0B</color>
+    <color name="background_status_bar">#000000</color>
+    <color name="background_bottom_bar">#000000</color>
+    <color name="background_overlay">#2A2A2A</color>
+    <color name="divider">@color/background_overlay</color>
+
+    <!-- Buttons -->
+    <color name="minebutton_color">@color/quattro_purple</color>
+
+    <!-- In-game control overlay buttons (leave as-is unless you want them purple too) -->
     <color name="control_button_color">#4CC4C4C4</color>
     <color name="control_button_pressed_color">#4D000000</color>
 
-    <color name="minebutton_color">#91dffb</color>
-    <color name="background_app">#181818</color>
-    <color name="divider">@color/background_overlay</color>
-    <color name="background_overlay">#464646</color>
-    <color name="background_status_bar">#242424</color>
-    <color name="background_bottom_bar">#232323</color>
+    <!-- Icons / text -->
     <color name="icon_outline_color">#FFFFFF</color>
-
     <color name="primary_text">#FFFFFF</color>
     <color name="secondary_text">#B2B2B2</color>
 </resources>
