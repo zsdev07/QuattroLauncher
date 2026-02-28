@@ -51,7 +51,7 @@
             android:title="@string/preference_experimental_title"
             android:summary="@string/preference_experimental_description"
             android:fragment="zx.offical.quattro.prefs.screens.LauncherPreferenceExperimentalFragment"
-            />
+            android:icon="@drawable/ic_quattro_experimental"/>
     </PreferenceCategory>
 
     <SwitchPreference
