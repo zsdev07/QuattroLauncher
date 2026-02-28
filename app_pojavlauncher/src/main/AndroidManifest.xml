@@ -29,7 +29,7 @@
         android:hasFragileUserData="true"
         android:icon="@mipmap/ic_launcher"
         android:isGame="true"
-        android:label="@string/app_name"
+        android:label="QuattroLauncher"
         android:process=":launcher"
         android:resizeableActivity="true"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -47,7 +47,7 @@
         <activity
             android:name="zx.offical.quattro.TestStorageActivity"
             android:exported="true"
-            android:label="@string/app_short_name"
+            android:label="Quattro"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,7 +57,7 @@
         </activity>
         <activity
             android:name="zx.offical.quattro.LauncherActivity"
-            android:label="@string/app_short_name"
+            android:label="Quattro"
             android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name="zx.offical.quattro.ImportControlActivity"
