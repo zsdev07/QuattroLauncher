@@ -64,6 +64,7 @@
     android:key="game_debug_logging"
     android:title="Enable game debug logging"
     android:summary="May reduce performance. Enable only for debugging."
+    android:icon="@drawable/ic_quattro_bug"
     />
 
     <Preference
