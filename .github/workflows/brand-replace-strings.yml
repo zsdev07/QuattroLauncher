@@ -1,0 +1,53 @@
+name: Brand replace in strings.xml
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  replace:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Replace MojoLauncher -> QuattroLauncher in strings.xml only
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          root = Path("app_pojavlauncher/src/main/res")
+          files = list(root.glob("values*/strings*.xml"))
+
+          if not files:
+            raise SystemExit("No strings.xml files found under values*/")
+
+          def do_replace(text: str) -> str:
+            # Replace both variants safely
+            text = text.replace("MojoLauncher", "QuattroLauncher")
+            text = text.replace("Mojo Launcher", "QuattroLauncher")
+            return text
+
+          changed = []
+          for f in files:
+            old = f.read_text(encoding="utf-8")
+            new = do_replace(old)
+            if new != old:
+              f.write_text(new, encoding="utf-8")
+              changed.append(str(f))
+
+          print("Changed files:", len(changed))
+          for c in changed:
+            print(" -", c)
+
+          PY
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add app_pojavlauncher/src/main/res/values*/strings*.xml
+          git commit -m "Rebrand: MojoLauncher -> QuattroLauncher (strings.xml only)" || echo "Nothing to commit"
+          git push
