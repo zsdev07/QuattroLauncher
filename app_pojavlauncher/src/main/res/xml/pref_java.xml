@@ -9,7 +9,8 @@
             android:key="install_jre"
             android:persistent="false"
             android:summary="@string/multirt_subtitle"
-            android:title="@string/multirt_title"/>
+            android:title="@string/multirt_title"
+            android:icon="@drawable/ic_quattro_runtime"/>
 
         <androidx.preference.EditTextPreference
             android:dialogTitle="@string/mcl_setting_title_javaargs"
@@ -17,7 +18,8 @@
             android:key="javaArgs"
             android:singleLine="true"
             android:summary="@string/mcl_setting_subtitle_javaargs"
-            android:title="@string/mcl_setting_title_javaargs" />
+            android:title="@string/mcl_setting_title_javaargs" 
+            android:icon="@drawable/ic_quattro_jvm_args"/>
 
         <zx.offical.quattro.prefs.CustomSeekBarPreference
             android:key="allocation"
@@ -27,7 +29,8 @@
             app2:showSeekBarValue="true"
             app2:min="@integer/memory_seekbar_min"
             app2:seekBarIncrement="@integer/memory_seekbar_increment"
-            app2:selectable="false"/>
+            app2:selectable="false"
+            android:icon="@drawable/ic_quattro_memory"/>
 
         <SwitchPreference
             android:defaultValue="true"
