@@ -355,7 +355,9 @@ public class JavaGUILauncherActivity extends BaseActivity implements View.OnTouc
     }
 
     public void launchJavaRuntime(Runtime runtime, List<String> javaArgs, File modFile, String mainClass) {
-        JREUtils.redirectAndPrintJRELog();
+        if (LauncherPreferences.PREF_GAME_DEBUG_LOGGING) {
+            JREUtils.redirectAndPrintJRELog();
+        }
         try {
             List<String> javaArgList = new ArrayList<>();
 
