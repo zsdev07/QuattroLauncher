@@ -38,7 +38,7 @@ jobs:
       - name: Create out directory
         run: mkdir out
       - name: Build Publishing .aab
-        if: github.repository_owner == 'MojoLauncher' && github.ref_name == 'v3_openjdk'
+        if: github.repository_owner == 'zsdev07' && github.ref_name == 'v3_openjdk'
         run: |
           gradle :app_pojavlauncher:bundleFullGplay
           mv app_pojavlauncher/build/outputs/bundle/fullGplay/app_pojavlauncher-full-gplay.aab out/app-gplay.aab
@@ -76,14 +76,3 @@ jobs:
         with:
           name: app-release-aab
           path: out/app-gplay.aab
-
-      - name: Upload onto the Google Play testing track
-        continue-on-error: true
-        if: github.repository_owner == 'MojoLauncher' && github.ref_name == 'v3_openjdk'
-        uses: r0adkll/upload-google-play@v1.1.2
-        with:
-          serviceAccountJsonPlainText: ${{ secrets.SERVICE_JSON }}
-          packageName: git.artdeell.mojo
-          releaseFiles: out/app-gplay.aab
-          track: internal
-          inAppUpdatePriority: 5
