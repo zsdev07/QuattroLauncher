@@ -60,6 +60,12 @@
         android:summary="@string/preference_force_english_description"
         />
 
+    <SwitchPreference
+    android:key="game_debug_logging"
+    android:title="Enable game debug logging"
+    android:summary="May reduce performance. Enable only for debugging."
+    />
+
     <Preference
         android:title="@string/preference_ask_for_notification_title"
         android:summary="@string/preference_ask_for_notification_description"
