@@ -27,7 +27,8 @@
             android:defaultValue="false"
             android:key="disableDoubleTap"
             android:summary="@string/mcl_disable_swap_hand_subtitle"
-            android:title="@string/mcl_disable_swap_hand" />
+            android:title="@string/mcl_disable_swap_hand" 
+            android:icon="@drawable/ic_quattro_hand_swap"/>
 
         <zx.offical.quattro.prefs.CustomSeekBarPreference
             android:key="timeLongPressTrigger"
@@ -62,9 +63,7 @@
             android:defaultValue="true"
             android:title="@string/mcl_setting_title_buttonallcaps"
             android:summary="@string/mcl_setting_subtitle_buttonallcaps"
-            />
-
-    </PreferenceCategory>
+            android:icon="@drawable/ic_quattro_caps"/>
 
     <PreferenceCategory
         android:title="@string/preference_category_virtual_mouse">
@@ -96,7 +95,7 @@
             android:key="mouse_start"
             android:title="@string/preference_mouse_start_title"
             android:summary="@string/preference_mouse_start_description"
-            />
+            android:icon="@drawable/ic_quattro_mouse_power"/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -106,7 +105,8 @@
         <SwitchPreference
             android:key="enableGyro"
             android:title="@string/preference_enable_gyro_title"
-            android:summary="@string/preference_enable_gyro_description"/>
+            android:summary="@string/preference_enable_gyro_description"
+            android:icon="@drawable/ic_quattro_gyro"/>
         <zx.offical.quattro.prefs.CustomSeekBarPreference
             android:key="gyroSensitivity"
             android:title="@string/preference_gyro_sensitivity_title"
@@ -147,11 +147,12 @@
         <Preference
             android:title="@string/preference_remap_controller_title"
             android:summary="@string/preference_remap_controller_description"
-            android:fragment="zx.offical.quattro.fragments.GamepadMapperFragment"/>
+            android:fragment="zx.offical.quattro.fragments.GamepadMapperFragment"
+            android:icon="@drawable/ic_quattro_controller_bind"/>
         <zx.offical.quattro.prefs.GamepadRemapPreference
             android:title="@string/preference_wipe_controller_title"
             android:summary="@string/preference_wipe_controller_description"
-            />
+            android:icon="@drawable/ic_quattro_reset"/>
         <zx.offical.quattro.prefs.CustomSeekBarPreference
             android:key="gamepad_deadzone_scale"
             android:title="@string/preference_deadzone_scale_title"
@@ -160,7 +161,7 @@
             app2:min="@integer/gamepad_deadzone_seekbar_min"
             android:max="@integer/gamepad_deadzone_seekbar_max"
             app2:seekBarIncrement="@integer/gamepad_deadzone_seekbar_increment"
-            />
+            android:icon="@drawable/ic_quattro_deadzone"/>
 
     </PreferenceCategory>
 
