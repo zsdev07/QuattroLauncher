@@ -70,6 +70,7 @@ public class LauncherPreferences {
 
     public static boolean PREF_RAPID_START = false;
     public static boolean PREF_VERIFY_FILES = true;
+	public static boolean PREF_GAME_DEBUG_LOGGING = false;
 
 
     public static void loadPreferences(Context ctx) {
@@ -113,6 +114,7 @@ public class LauncherPreferences {
         PREF_VSYNC_IN_ZINK = DEFAULT_PREF.getBoolean("vsync_in_zink", false);
         PREF_VERIFY_FILES = DEFAULT_PREF.getBoolean("checkGameFiles", true);
         PREF_RAPID_START = DEFAULT_PREF.getBoolean("fastStartupCheck", true);
+		PREF_GAME_DEBUG_LOGGING = DEFAULT_PREF.getBoolean("game_debug_logging", false);
 
         String argLwjglLibname = "-Dorg.lwjgl.opengl.libname=";
         for (String arg : JREUtils.parseJavaArguments(PREF_CUSTOM_JAVA_ARGS)) {
