@@ -34,11 +34,6 @@ jobs:
           java-version: '17'
       - name: Create out directory
         run: mkdir out
-      - name: Build Publishing .aab
-        if: github.repository_owner == 'zsdev07' && github.ref_name == 'v3_openjdk'
-        run: |
-          gradle :app_pojavlauncher:bundleFullGplay
-          mv app_pojavlauncher/build/outputs/bundle/fullGplay/app_pojavlauncher-full-gplay.aab out/app-gplay.aab
 
       - name: Build Debug .apk
         run: |
@@ -67,9 +62,3 @@ jobs:
         with:
           name: app-debug-noruntime
           path: out/app-debug-noruntime.apk
-
-      - name: Upload AAB
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-release-aab
-          path: out/app-gplay.aab
