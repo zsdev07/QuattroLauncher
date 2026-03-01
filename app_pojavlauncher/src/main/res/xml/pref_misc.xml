@@ -25,7 +25,8 @@
             android:entryValues="@array/download_source_values"
             android:title="@string/preference_download_source_title"
             android:summary="@string/preference_download_source_description"
-            app2:useSimpleSummaryProvider="true"/>
+            app2:useSimpleSummaryProvider="true"
+            android:icon="@drawable/ic_quattro_downsource"/>
         <SwitchPreference
             android:defaultValue="true"
             android:key="verifyManifest"
