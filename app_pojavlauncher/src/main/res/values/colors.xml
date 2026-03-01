@@ -20,7 +20,7 @@
     <color name="control_button_pressed_color">#4D000000</color>
 
     <!-- Icons / text -->
-    <color name="icon_outline_color">#FFFFFF</color>
+    <color name="icon_outline_color">#E3E3E3</color>
     <color name="primary_text">#FFFFFF</color>
     <color name="secondary_text">#B2B2B2</color>
 </resources>
