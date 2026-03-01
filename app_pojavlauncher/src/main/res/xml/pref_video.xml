@@ -36,7 +36,7 @@
             android:summary="@string/preference_sustained_performance_description"
             android:key="sustainedPerformance"
             android:defaultValue="false"
-            android:icon="@drawable/ic_quattro_zink"/>
+            android:icon="@drawable/ic_quattro_sustained"/>
 
         <androidx.preference.SwitchPreferenceCompat
             android:defaultValue="false"
