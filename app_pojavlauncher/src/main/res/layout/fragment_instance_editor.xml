@@ -243,6 +243,35 @@
                 app:layout_constraintEnd_toEndOf="@id/vprof_editor_instance_renderer"
                 app:layout_constraintTop_toTopOf="@id/vprof_editor_instance_renderer" />
 
+            <TextView
+                android:id="@+id/vprof_editor_manage_mods_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/instance_mod_manager_title"
+                app:layout_constraintBottom_toTopOf="@+id/vprof_editor_manage_mods_button"
+                app:layout_constraintStart_toStartOf="@+id/vprof_editor_manage_mods_button" />
+
+            <com.kdt.mcgui.MineButton
+                android:id="@+id/vprof_editor_manage_mods_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/instance_mod_manager_open"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/vprof_editor_instance_renderer" />
+
+            <TextView
+                android:id="@+id/vprof_editor_manage_mods_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/padding_medium"
+                android:textColor="@color/secondary_text"
+                app:layout_constraintBottom_toBottomOf="@+id/vprof_editor_manage_mods_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/vprof_editor_manage_mods_button"
+                app:layout_constraintTop_toTopOf="@+id/vprof_editor_manage_mods_button"
+                tools:text="Available for Fabric, Forge, NeoForge, Quilt, and supported modpacks." />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

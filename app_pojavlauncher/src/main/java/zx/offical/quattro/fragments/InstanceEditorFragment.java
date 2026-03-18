@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -17,6 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -28,6 +32,9 @@ import zx.offical.quattro.extra.ExtraCore;
 import zx.offical.quattro.instances.Instance;
 import zx.offical.quattro.instances.Instances;
 import zx.offical.quattro.multirt.MultiRTUtils;
+import zx.offical.quattro.mods.InstanceModManager;
+import zx.offical.quattro.mods.InstanceModsAdapter;
+import zx.offical.quattro.mods.LocalModFile;
 import zx.offical.quattro.multirt.RTSpinnerAdapter;
 import zx.offical.quattro.multirt.Runtime;
 import zx.offical.quattro.instances.InstanceIconProvider;
@@ -36,19 +43,22 @@ import zx.offical.quattro.utils.CropperUtils;
 import zx.offical.quattro.utils.RendererCompatUtil;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import zx.offical.quattro.PojavApplication;
 
 public class InstanceEditorFragment extends Fragment implements CropperUtils.CropperReceiver {
     public static final String TAG = "InstanceEditorFragment";
 
     private Instance mInstance;
     private String mSelectedControlLayout;
-    private Button mSaveButton, mDeleteButton, mControlSelectButton, mVersionSelectButton;
+    private Button mSaveButton, mDeleteButton, mControlSelectButton, mVersionSelectButton, mManageModsButton;
     private Spinner mDefaultRuntime, mDefaultRenderer;
     private EditText mDefaultName, mDefaultJvmArgument;
-    private TextView mDefaultVersion, mDefaultControl;
+    private TextView mDefaultVersion, mDefaultControl, mManageModsStatus;
     private ImageView mInstanceIcon;
     private CheckBox mSharedDataCheckbox;
     private int mRecommendedIconSize;
@@ -108,6 +118,8 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
         mVersionSelectButton.setOnClickListener(versionSelectListener);
         mDefaultVersion.setOnClickListener(versionSelectListener);
 
+        mManageModsButton.setOnClickListener(v -> openModManagerDialog());
+
         // Set up the icon change click listener
         mInstanceIcon.setOnClickListener(v -> {
             // Fill recommended size on click to ge the most up to date data
@@ -120,6 +132,7 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
             int text = R.string.instance_shared_data_off;
             if(checked) text = R.string.instance_shared_data_on;
             mSharedDataCheckbox.setText(text);
+            refreshModManagerState();
         });
 
         Instance selectedInstance = Instances.loadSelectedInstance();
@@ -144,7 +157,11 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
     }
 
     private View.OnClickListener getVersionSelectListener() {
-        return v -> VersionSelectorDialog.open(v.getContext(), false, (id, snapshot)-> mDefaultVersion.setText(id));
+        return v -> VersionSelectorDialog.open(v.getContext(), false, (id, snapshot)-> {
+            mDefaultVersion.setText(id);
+            if (mInstance != null) mInstance.versionId = id;
+            refreshModManagerState();
+        });
     }
 
     private static String nullToEmpty(String in) {
@@ -180,6 +197,87 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
         mDefaultName.setText(nullToEmpty(instance.name));
         mDefaultControl.setText(mSelectedControlLayout == null ? nullToEmpty(instance.controlLayout) : mSelectedControlLayout);
         mSharedDataCheckbox.setChecked(instance.sharedData);
+        refreshModManagerState();
+    }
+
+
+    private void refreshModManagerState() {
+        if (mInstance == null) return;
+        InstanceModManager.ModSupportInfo supportInfo = InstanceModManager.getSupportInfo(mInstance);
+        mManageModsButton.setEnabled(supportInfo.isSupported);
+        mManageModsButton.setAlpha(supportInfo.isSupported ? 1f : 0.5f);
+        mManageModsStatus.setText(supportInfo.isSupported
+                ? getString(R.string.instance_mod_manager_ready, supportInfo.modsDirectory.getAbsolutePath())
+                : supportInfo.reason);
+    }
+
+    private void openModManagerDialog() {
+        if (mInstance == null) return;
+        InstanceModManager.ModSupportInfo supportInfo = InstanceModManager.getSupportInfo(mInstance);
+        if (!supportInfo.isSupported) return;
+
+        Context context = requireContext();
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_instance_mod_manager, null, false);
+        TextView summaryView = dialogView.findViewById(R.id.instance_mod_manager_summary);
+        ProgressBar progressBar = dialogView.findViewById(R.id.instance_mod_manager_progress);
+        TextView emptyView = dialogView.findViewById(R.id.instance_mod_manager_empty);
+        RecyclerView recyclerView = dialogView.findViewById(R.id.instance_mod_manager_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+        summaryView.setText(getString(R.string.instance_mod_manager_ready, supportInfo.modsDirectory.getAbsolutePath()));
+
+        InstanceModsAdapter adapter = new InstanceModsAdapter((mod, enabled, position) ->
+                PojavApplication.sExecutorService.execute(() -> {
+                    try {
+                        InstanceModManager.setModEnabled(mod, enabled);
+                        Tools.runOnUiThread(() -> {
+                            adapter.notifyItemChanged(position);
+                            Toast.makeText(context, enabled
+                                    ? R.string.instance_mod_toggle_enabled_message
+                                    : R.string.instance_mod_toggle_disabled_message, Toast.LENGTH_SHORT).show();
+                        });
+                    } catch (IOException e) {
+                        Tools.runOnUiThread(() -> {
+                            mod.enabled = !enabled;
+                            adapter.notifyItemChanged(position);
+                            Tools.showError(context, e);
+                        });
+                    }
+                }));
+        recyclerView.setAdapter(adapter);
+
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle(R.string.instance_mod_manager_title)
+                .setView(dialogView)
+                .setPositiveButton(android.R.string.ok, null)
+                .show();
+
+        PojavApplication.sExecutorService.execute(() -> {
+            List<LocalModFile> mods = Collections.emptyList();
+            try {
+                mods = InstanceModManager.scanMods(mInstance);
+            } catch (RuntimeException e) {
+                List<LocalModFile> finalMods = mods;
+                Tools.runOnUiThread(() -> {
+                    if (!dialog.isShowing()) return;
+                    progressBar.setVisibility(View.GONE);
+                    emptyView.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                    emptyView.setText(R.string.instance_mod_manager_scan_failed);
+                    Tools.showError(context, e);
+                });
+                return;
+            }
+            List<LocalModFile> finalMods = mods;
+            Tools.runOnUiThread(() -> {
+                if (!dialog.isShowing()) return;
+                progressBar.setVisibility(View.GONE);
+                adapter.setItems(finalMods);
+                boolean hasMods = !finalMods.isEmpty();
+                recyclerView.setVisibility(hasMods ? View.VISIBLE : View.GONE);
+                emptyView.setVisibility(hasMods ? View.GONE : View.VISIBLE);
+            });
+        });
     }
 
     private void bindViews(@NonNull View view){
@@ -193,8 +291,10 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
 
         mSaveButton = view.findViewById(R.id.vprof_editor_save_button);
         mDeleteButton = view.findViewById(R.id.vprof_editor_delete_button);
+        mManageModsButton = view.findViewById(R.id.vprof_editor_manage_mods_button);
         mControlSelectButton = view.findViewById(R.id.vprof_editor_ctrl_button);
         mVersionSelectButton = view.findViewById(R.id.vprof_editor_version_button);
+        mManageModsStatus = view.findViewById(R.id.vprof_editor_manage_mods_status);
         mInstanceIcon = view.findViewById(R.id.vprof_editor_instance_icon);
         mSharedDataCheckbox = view.findViewById(R.id.vprof_editor_data_checkbox_container);
     }
