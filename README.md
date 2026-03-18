@@ -61,5 +61,5 @@ QuattroLauncher is a fork based on the incredible foundational work of the Pojav
 ``•Technologies: Built with OpenJDK, LWJGL 3, and GL4ES.``
 
 <p align="center">
-<strong>Maintained with passion by zdev07</strong>
+<strong>Maintained with passion by zsdev07</strong>
 </p>
