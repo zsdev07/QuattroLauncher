@@ -226,13 +226,12 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
 
         summaryView.setText(getString(R.string.instance_mod_manager_ready, supportInfo.modsDirectory.getAbsolutePath()));
 
-        final InstanceModsAdapter[] adapterHolder = new InstanceModsAdapter[1];
-        adapterHolder[0] = new InstanceModsAdapter((mod, enabled, position) ->
+        InstanceModsAdapter adapter = new InstanceModsAdapter((mod, enabled, position) ->
                 PojavApplication.sExecutorService.execute(() -> {
                     try {
                         InstanceModManager.setModEnabled(mod, enabled);
                         Tools.runOnUiThread(() -> {
-                            adapterHolder[0].notifyItemChanged(position);
+                            adapter.notifyItemChanged(position);
                             Toast.makeText(context, enabled
                                     ? R.string.instance_mod_toggle_enabled_message
                                     : R.string.instance_mod_toggle_disabled_message, Toast.LENGTH_SHORT).show();
@@ -240,12 +239,11 @@ public class InstanceEditorFragment extends Fragment implements CropperUtils.Cro
                     } catch (IOException e) {
                         Tools.runOnUiThread(() -> {
                             mod.enabled = !enabled;
-                            adapterHolder[0].notifyItemChanged(position);
+                            adapter.notifyItemChanged(position);
                             Tools.showError(context, e);
                         });
                     }
                 }));
-        InstanceModsAdapter adapter = adapterHolder[0];
         recyclerView.setAdapter(adapter);
 
         AlertDialog dialog = new AlertDialog.Builder(context)
